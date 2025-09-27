@@ -1,6 +1,8 @@
 import { assets } from "../assets/assets";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { motion } from "motion/react";
+import { AppContext } from "../context/AppContext";
+import { toast } from "react-toastify";
 
 const Result = () => {
   const [image, setImage] = useState(assets.sample_img_1);
@@ -8,7 +10,26 @@ const Result = () => {
   const [loading, setLoading] = useState(false);
   const [input, setInput] = useState("");
 
-  const handleSubmit = async (e) => {};
+  const { generateImage } = useContext(AppContext);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!input.trim()) return;
+
+    try {
+      setLoading(true);
+      const image = await generateImage(input.trim());
+      if (image) {
+        setisImageLoaded(true);
+        setImage(image);
+      }
+    } catch (error) {
+      toast.error(error.message);
+      console.error(error)
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <motion.form
@@ -35,7 +56,7 @@ const Result = () => {
         <div className="flex w-full max-w-xl bg-neutral-500 text-white text-sm p-0.5 mt-10 rounded-full">
           <input
             onChange={(e) => {
-              e.target.value;
+              setInput(e.target.value);
             }}
             value={input}
             type="text"
@@ -44,9 +65,15 @@ const Result = () => {
           />
           <button
             type="submit"
-            className="bg-zinc-900 px-10 sm:px-16 py-3 rounded-full"
+            disabled={!input.trim() || loading}
+            className={`px-10 sm:px-16 py-3 rounded-full 
+            ${
+              !input.trim() || loading
+                ? "bg-gray-400 cursor-not-allowed"
+                : "bg-zinc-900 text-white cursor-pointer"
+            }`}
           >
-            Generate
+            {loading ? "Generating..." : "Generate"}
           </button>
         </div>
       )}
