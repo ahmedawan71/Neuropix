@@ -116,7 +116,7 @@ const Login = () => {
           Forgot Password?
         </p>
 
-        <button className="bg-blue-600 rounded-full py-2 text-white w-full">
+        <button className="bg-blue-600 rounded-full py-2 text-white w-full cursor-pointer">
           {type === "Login" ? "Login" : "Create Account"}
         </button>
 
