@@ -1,1 +1,1 @@
-#Neuropix - AI Image Generator in MERN
+# Neuropix - AI Image Generator in MERN
