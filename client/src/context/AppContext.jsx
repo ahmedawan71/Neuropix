@@ -1,7 +1,7 @@
 import axios from "axios";
 import { createContext } from "react";
 import { useState, useEffect } from "react";
-import { data, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 export const AppContext = createContext();
@@ -11,7 +11,7 @@ const AppContextProvider = (props) => {
   const [showLogin, setShowLogin] = useState(false);
 
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
-  const [credits, setCredits] = useState(false);
+  const [credits, setCredits] = useState(0);
   const [token, setToken] = useState(localStorage.getItem("token"));
 
   const navigate = useNavigate();
@@ -63,9 +63,11 @@ const AppContextProvider = (props) => {
   };
 
   const logout = () => {
+    navigate('/');
     localStorage.removeItem("token");
     setToken("");
     setUser(null);
+    setCredits(0);
   };
 
   useEffect(() => {

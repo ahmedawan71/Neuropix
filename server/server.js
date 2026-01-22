@@ -4,9 +4,14 @@ import 'dotenv/config'
 import connectDB from './config/mongodb.js'
 import userRouter from './routes/userRoutes.js'
 import imageRouter from './routes/imageRoutes.js'
+import paymentRouter from './routes/paymentRoutes.js'
+import webhookRouter from './routes/webhookRoutes.js'
 
 const PORT = process.env.PORT || 4000
 const app = express()
+
+// Webhook route must be before express.json() middleware
+app.use('/api/webhook', webhookRouter)
 
 app.use(express.json())
 app.use(cors())
@@ -14,6 +19,7 @@ await connectDB()
 
 app.use('/api/user', userRouter)
 app.use('/api/image', imageRouter)
+app.use('/api/payment', paymentRouter)
 app.get('/', (req, res) => res.send('API Working'))
 
 app.listen(PORT, () => console.log("Server running on port " + PORT))

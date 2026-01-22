@@ -2,6 +2,8 @@ import { Routes, Route } from 'react-router-dom'
 import Home from './pages/Home'
 import Result from './pages/Result'
 import BuyCredit from './pages/BuyCredit'
+import Success from './pages/Success'
+import Cancel from './pages/Cancel'
 import NavBar from './components/NavBar'
 import Footer from './components/Footer'
 import Login from './components/Login'
@@ -23,6 +25,8 @@ const App = () => {
         <Route path='/' element={<Home/>}/>
         <Route path='/result' element={<Result/>}/>
         <Route path='/buy' element={<BuyCredit/>}/>  
+        <Route path='/success' element={<Success/>}/>
+        <Route path='/cancel' element={<Cancel/>}/>
       </Routes>
       <Footer/>
     </div>

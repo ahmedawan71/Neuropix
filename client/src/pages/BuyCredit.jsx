@@ -2,9 +2,37 @@ import React, { useContext } from "react";
 import { assets, plans } from "../assets/assets";
 import { AppContext } from "../context/AppContext";
 import { motion } from "motion/react";
+import axios from "axios";
 
 const BuyCredit = () => {
-  const { user } = useContext(AppContext);
+  const { user, token, setShowLogin } = useContext(AppContext);
+
+  const handlePurchase = async (item) => {
+    try {
+      if (!user) {
+        // Trigger login modal when unauthenticated
+        setShowLogin(true);
+        return;
+      }
+
+      const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/payment/checkout`,
+        {
+          planId: item.id,
+          price: item.price,
+          credits: item.credits,
+        },
+        {
+          headers: { token },
+        }
+      );
+
+      if (response.data.url) {
+        window.location.href = response.data.url;
+      }
+    } catch (error) {
+      console.error("Payment error:", error);
+    }
+  };
   return (
     <motion.div
       initial={{ opacity: 0.2, y: 100 }}
@@ -33,7 +61,10 @@ const BuyCredit = () => {
               <span className="text-3xl font-medium">${item.price}</span> /{" "}
               {item.credits} credits
             </p>
-            <button className="w-full bg-gray-800 text-white mt-8 text-sm rounded-md py-2.5 min-w-52 cursor-pointer">
+            <button
+              onClick={() => handlePurchase(item)}
+              className="w-full bg-gray-800 text-white mt-8 text-sm rounded-md py-2.5 min-w-52 cursor-pointer hover:bg-gray-700 transition-colors"
+            >
               {user ? "Purchase" : "Get Started"}
             </button>
           </div>
