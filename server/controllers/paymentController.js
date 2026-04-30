@@ -7,7 +7,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY)
 export const createCheckoutSession = async (req, res) => {
     try {
         const { planId, price, credits } = req.body;
-        const userId = req.userId; // From auth middleware
+        const userId = req.userId; 
 
         if (!userId) {
             return res.status(401).json({ error: "Not authorized" });
